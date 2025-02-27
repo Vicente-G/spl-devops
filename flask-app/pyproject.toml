@@ -1,0 +1,68 @@
+[tool.pdm]
+
+[project]
+name = "flask-app"
+version = "0.1.0"
+description = "A simple Flask app with gunicorn and logging"
+authors = [
+    {name = "Vicente-G"},
+]
+requires-python = "==3.10.*"
+readme = "README.md"
+license = {text = "AGPL-3.0"}
+dependencies = [
+    "flask>=3.1.0",
+    "gunicorn>=23.0.0",
+    "logging>=0.4.9.6",
+    "dotenv>=0.9.9",
+    "colorama>=0.4.6",
+]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=25.1.0",
+    "ruff>=0.9.8",
+    "pytest>=8.3.4",
+]
+
+[tool.pdm.scripts]
+start = "python -m gunicorn -b 0.0.0.0:8080 'src:create_app()'"
+dev = "python src/__init__.py --debug"
+check = { composite = [
+    "python -m ruff check ./src ./tests",
+    "python -m black --check ./src ./tests",
+] }
+fix = { composite = [
+    "python -m ruff check --fix ./src ./tests",
+    "python -m black ./src ./tests",
+] }
+test = "python -m pytest -v ./tests"
+
+[tool.black]
+line-length = 80
+
+[tool.ruff]
+lint.extend-select = [
+    "B",
+    "BLE",
+    "C4",
+    "ERA",
+    "I",
+    "ICN",
+    "ISC",
+    "N",
+    "NPY",
+    "PGH",
+    "PIE",
+    "Q",
+    "RET",
+    "RSE",
+    "RUF",
+    "S",
+    "SIM",
+    "T20",
+    "TID",
+    "YTT",
+]
+lint.ignore = ["E402", "B905", "N818", "S101", "S104"]
+show-fixes = true
